@@ -1,0 +1,165 @@
+                                                            
+                                                                       Kubernetes - 01
+
+
+
+Day - 1 -Kubernetes
+=================
+
+1)kube-apiserver: The API server is a component of the Kubernetes control plane that exposes the Kubernetes API. ...
+2)etcd db : which stores the data related to the pod created 
+3)kube-scheduler : Which recives the request from the api and do the work
+4)kube-controller-manager : Which control the worker node (Scalingup/down, delete/recover)
+5)Pod : Which is the logical bondary to hold the containers
+6)kubelet : Which helps to create the pod
+7)kube-proxy: Which take care about the network, IP address, security related things belongs to POD
+8)Docker: Helps to create the containers
+
+---------------
+t2 medium
+
+2 ec2 docker in both and enable it
+
+kubernetes install in both and enable it
+
+---------------------------------
+in master
+--------------
+kubeadm init
+
+mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+install 3 following cmd of kubadm
+
+then paste token in WORKER node
+
+calico from tiger
+
+kubectl get nodes = to check the nodes
+
+-----------------------------
+imperative
+===========
+
+kubectl get podes === to check the pods
+
+kubectl run mypod --image=nginx  === create pod
+
+kubectl get pods -o wide == check the ip address of pod
+
+-------------------------------
+declarative
+===========
+
+kubectl delete pod podname
+
+.yml
+
+manifest pod
+----------------------
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.14.2
+
+kubectl apply -f .yml === to create the pod using yml file
+
+kubectl describe pod nandinipod === Check all the details of the pod
+
+
+=====================================================================================
+
+  Kubernetes
+                                                              Day -02
+
+
+#kubectl run testpod(podname) --image=nginx  //to cretae pod by imperative method
+#kubectl get pods //to check pods
+#kubectl get pods -o wide //to check ip address of the pods
+#kubectl delete pod podname //to delete perticular pod
+#kubectl delete pod --all //to delete all the pods
+
+
+ Labels:
+
+-- With the helps of labels we can select perticular pod
+-- Labels are the mechanism where we can organise our kubernetes objects
+-- Labels are the key:value pair
+
+With labels we will create pods by using declarative method:
+
+#vi pod1.yml
+
+kind: Pod
+apiVersion: v1
+metadata:
+  name: mypod
+  labels:                                                   
+    env: development   //this is label we set to our pod
+    class: pods
+spec:
+    containers:
+       - name: c00
+         image: ubuntu
+         command: ["/bin/bash", "-c", "while true; do echo Hello-SUMEET; sleep 5 ; done"]
+
+#kubectl apply -f pod1.yml
+#kubectl get pods
+#kubectl get pods -o wide
+#kubectl get pods --show-labels //to check label
+
+
+Label set by using imperative method
+
+#kubectl label pods mypod(pod_name) myname=nandu(label)
+#kubectl get pods --show-labels
+#kubectl run pod-xyz --image-nginx (here we didn't set any label , but if we check label for this pod ,by default run=pod-xyz this label has been set)
+to set customized name for run=pod-xyz ,we will use below command
+#kubectl label pods pod-xyz application=k8s
+#kubectl get pods --show-label
+
+We forgot the pod name(pod-xyz) in this case we can find out the pod name using label
+# kubectl get pods -l application=k8s 
+
+=====================================
+
+Selectors:
+
+#vi pod4.yml
+
+kind: Pod
+apiVersion: v1
+metadata:
+  name: nodelabels
+  labels:
+    env: development
+spec:
+    containers:
+       - name: c00
+         image: ubuntu
+         command: ["/bin/bash", "-c", "while true; do echo Hello-SUMEET; sleep 5 ; done"]
+    nodeSelector:                                         
+       hardware: t2-medium
+
+according to above manifest , this is the selector -  hardware: t2-medium, if we set this name to node -->hardware: t2-medium, then using this selecor we can select specific node and do the neccessary changes
+
+#kubectl apply -f pod4.yml
+#kubectl get nodes
+#kubectl get nodes --show-labels
+#kubectl get pods // here nodelabels is showing as pending status ,because not yet set this name -->  hardware: t2-medium
+ to any node ,so will see how to set this name-->  hardware: t2-medium to node
+#kubectl get nodes
+#kubectl label nodes (copy and paste the ip of the node) hardware: t2-medium
+#kubectl get pods (now node labels should show in running status)
+#kubectl describe pod nodelabels
+#kubectl delete pods --all //to delete all the pods
+
+
+
+
+

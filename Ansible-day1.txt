@@ -1,0 +1,45 @@
+Ansible set-up
+
+1) Launch-2 EC2 instace  
+  i)master ii) worker
+
+ install ansible in master
+
+2) establish passwordless connection between servers
+    master: 
+    sudo -i
+    ls -a
+    cd .ssh
+    ssh-keygen (enter 4 times)
+    cat id_rsa_pub (copy this content)
+
+
+  worker:
+   sudo -i
+    ls -a
+    cd .ssh
+    vi authorozed_keys
+  (paste that content)
+
+master:
+ ssh root@public_ip(worker)
+     
+
+3) Inventory file
+  vi /etc/ansible/hosts
+
+inside file : worker ansible_host=private ip(worker node)
+====================================================================================
+
+
+Day - 3
+------------
+Ansible -- 
+             1) How to make the playbook as encrypted 
+              2) How to make the playbook as Decrypted 
+               3)How to edit encrypted playbook
+                   4) How to viewencrypted playbook
+                      5) While creating only i need to encrypt
+                           6) Resetting the password 
+ 
+  

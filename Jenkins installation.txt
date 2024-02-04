@@ -1,0 +1,18 @@
+sudo -i
+sudo apt update
+sudo apt install openjdk-11-jdk
+java -version //11.0.21
+
+Jenkins installation
+curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]  https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+sudo apt update
+sudo apt install jenkins
+jenkins --version //2.426.1
+systemctl status jenkins
+
+public ip address copy and paste in another window with port:8080 -- 3.110.157.72:8080
+
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword -- password

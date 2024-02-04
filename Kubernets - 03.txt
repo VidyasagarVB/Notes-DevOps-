@@ -1,0 +1,230 @@
+                                                                Kubernets
+                                                                 Day -03
+
+
+
+Replicas/Pod Controller - 3 types
+1) Replica Controller
+2) Replicaset controller
+3) Deployment controller
+
+==============================================
+1) Replica controller   
+    How to create Replica controller
+    Scaleup, scale down
+
+--- we can mention only one lable
+----apiVersion:v1
+
+#vi myrc.yml
+kind: ReplicationController               
+apiVersion: v1
+metadata:
+  name: myreplica
+spec:
+  replicas: 2   //means 2 pods will created          
+  selector:        
+    myname: Sumeet                             
+  template:                
+    metadata:
+      name: testpod6
+      labels:            
+        myname: Sumeet
+    spec:
+     containers:
+       - name: c00
+         image: ubuntu
+         command: ["/bin/bash", "-c", "while true; do echo Hello-SUMEET; sleep 5 ; done"]
+
+#kubectl apply -f myrc.yml //to deploy the menifest
+#kubectl get rc   //to know the replication controller name
+#kubectl get pods
+#kubectl get pods --show-labels  //to check labels
+#kubectl scale --replicas=4 rc -l myname=viday(label which we have mentioned in the manifest)  //to scale up or scale down
+#kubectl delete -f myrc.yml // use to delete the resources inside the manifest , Note: here we are not deleting the manifest ,if we check #ls  -->myrc.yml will show(manifest not deleted)
+===============================================================================================
+
+
+2) Replicaset controller
+    How to create Replicaset controller
+    Scaleup, scale down
+
+--- we can use multiple labels
+----apiVersion:apps/v1
+
+#vi myrs.yml
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: replicaset
+spec:
+  replicas: 5
+  selector: 
+    matchLabels:
+      myname: sumeet
+  template:
+    metadata:
+      name: tomcat-nginx-2
+      labels:
+        myname: sumeet
+    spec:
+      containers:
+        - name: tomcat
+          image: kavana147/tomcat:2.0
+
+#kubectl apply -f myrs.yml //to deploy the menifest
+#kubectl get rs   //to know the replication set controller name
+#kubectl get pods
+#kubectl get pods --show-labels  //to check labels
+#kubectl scale --replicas=4 rs/replicaset(replicaset name)  //to scale up or scale down
+#kubectl delete -f myrs.yml // use to delete the resources inside the manifest , Note: here we are not deleting the manifest ,if we check #ls  -->myrc.yml will show(manifest not deleted)
+=================================================================================================================================
+3)  Deployment controller
+    How to create  Deployment controller
+    Scaleup, scale down
+
+--- we can use multiple labels
+----apiVersion:apps/v1
+
+#vi mydeploy.yml
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+   name: mydeployments
+spec:
+   replicas: 2
+   selector:
+    matchLabels:
+     name: deployment
+   template:
+     metadata:
+       name: testpod
+       labels:
+         name: deployment
+     spec:
+      containers:
+        - name: c00
+          image: ubuntu
+          command: ["/bin/bash", "-c", "while true; do echo HELLO SUMEET; sleep 5; done"]
+
+#kubectl apply -f myrs.yml //to deploy the menifest
+#kubectl get deploy   //to know the deployment controller name
+#kubectl get rs // because Deployment controller will create on replicaset so we are checking replicaset controller here
+#kubectl get pods
+#kubectl get pods --show-labels  //to check labels
+#kubectl scale --replicas=4 deploy mydeployment(deployment name)  //to scale up or scale down
+#kubectl get pods
+#kubectl logs -f mydeploymentname(copy from above command #kubectl get pods) // to check belo command working or not {  command: ["/bin/bash", "-c", "while true; do echo HELLO SUMEET; sleep 5; done"]}
+
+#kubectl delete -f mydeploy.yml // use to delete the resources inside the manifest , Note: here we are not deleting the manifest ,if we check #ls  -->myrc.yml will show(manifest not deleted)
+
+
+
+rolling update stratergy:
+ 
+Initially we have os:ubuntu and I have changed it to centos , So if I want to reverback this changes (means centos to ubuntu) we will use rolling update stratergy
+
+rollback steps --> 
+
+mydeployments(deployment name mentione in menifest) -rollout 
+ 
+ 1) kubectl rollout status deployment mydeployments --to update our deployment rollback
+ 2)kubectl rollout history deployment mydeployments
+3) kubectl rollout undo deploy/mudeployments
+
+
+==========================================================================
+
+kubectl exec mydeployments-859984fb84-j444f -- cat /etc/os-release  //to chcek os
+
+
+
+=============================================================================
+
+
+
+                                Kubernetes - Day -04
+
+
+
+
+
+=============================================================================================================================================
+
+                                                               Kubernetes - Day -05
+
+Day --5
+-----------
+1)What is namespace  == virtual cluster
+2)Implementaion
+3)Creating the pod in the respective created namespace
+4)Storage allocation for the same 
+
+-----------------------------------------------------
+Maven
+-----------
+1)git install 
+2clone the code
+3)run the mvn cycle
+
+1)mvn validate
+2)mvn compile
+3)mvn test
+4)mvn pakage
+5)mvn integration-test
+6)mvn verfy
+7)mvn install
+================================
+==============================NAMESPACES===================================
+apiVersion: v1
+kind: Namespace
+metadata:
+   name: dev
+   labels:
+     name: dev
+=================================to create a pod=================
+
+kind: Pod                              
+apiVersion: v1                     
+metadata:                           
+  name: dbapod                  
+spec:                                    
+  containers:                      
+    - name: c00                     
+      image: ubuntu              
+      command: ["/bin/bash", "-c", "while true; do echo Hello-SUMEET; sleep 5 ; done"]
+
+============================to create inside that pod=======================
+kubectl apply -f name.yml -n dev
+
+kubectl getpods -n dba
+
+====================================To change cluster=============================================
+
+$ kubectl config set-context $(kubectl config current-context) --namespace=dev
+$ kubectl config view | grep namespace:
+
+==================================Resources============================================================
+apiVersion: v1
+kind: Pod
+metadata:
+  name: resources
+spec:
+  containers:
+  - name: resource
+    image: centos
+    command: ["/bin/bash", "-c", "while true; do echo Hello-SUMEE; sleep 5 ; done"]
+    resources:                                          
+      requests:
+        memory: "64Mi"
+        cpu: "100m"
+      limits:
+        memory: "128Mi"
+        cpu: "200m"
+
+
+
+
+
+                                                                  

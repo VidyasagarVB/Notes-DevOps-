@@ -1,0 +1,81 @@
+                                                                                    Docker:
+ day1:  Docker overview, installation
+
+==================================================
+ day2:  
+
+1) How to check docker images
+  docker images
+
+2) how to create conatiner
+  docker run -it --name container_name imagename /bin/bash
+
+3) how to check containers
+  i) docker ps --- only of running containers
+  ii) docker ps -a ---both active and inactive containers
+
+4) how to start container
+  docker start container_name
+
+5) how to go inside container
+  docker attach conatiner_name
+
+6) how to create customized image by using existing container
+   docker commit container_name(existing container) image_name(customied image)
+
+7) how to delete container
+  docker rm container_name
+
+8) How to search image
+   docker search image_name
+
+9)To check docker service in our local
+   service docker status
+========================================
+Day 3:
+
+instructions:
+
+1. FROM ---image pull
+2. RUN -- execute -
+3. WORKDIR -- set working directory for container
+4. ENV - to set name 
+5.COPY - copy file from source to dest
+6. ADD - similar to COPY command      
+7. VOLUME
+
+=======================================================
+
+
+docker build -t Nandini .  //image create
+
+tar -cvf test.tar test // tar file
+
+# echo $myname //to check  ENV variable 
+
+docker run -it --name container4 --privileged=true --volumes-from container3 ubuntu /bin/bash //to share volume from  container3 to congtainer4
+
+====================================
+
+Day-4:
+
+
+Docker day 4
+------------------
+1)docker run -td --name vidya -p 80:80 ubuntu === Port mapping with the docker 
+
+--------------systemctl enable docker
+----------------------systemctl restart docker
+--------------------------systemctl status docker
+
+2)docker exec -it containername(Vidya) /bin/bash === stars the conatiner and attach
+
+4)docker commit containername imagename 
+
+3)docker login === to login 
+
+5)docker tag imgname(customie img name) dockerID/commit msg == push the img to docker hub
+
+6)docker push dockerID/newimage === push the img to docker hub
+
+
