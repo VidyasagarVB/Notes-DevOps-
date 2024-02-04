@@ -1,0 +1,70 @@
+
+git version - 2.34.1
+
+====================================================================
+
+git init --- 3 layersb logical separation 
+              i) Working space
+              ii) Stagging area   
+              iii) Local repo
+
+
+
+git init
+git add .
+git commit -m "message"
+git remote add origin "git url"
+git push -u origin branch_name
+
+
+git branch branch_name //branch creation
+git checkout branch_name // to switch branch
+git checkout -b branch_name // it will create new branch and switch to that branch
+
+
+git stash //temporary memory
+how to apply git stash 
+- fist create empty file and commit it
+  touch demofile 
+  git add.
+  git commit "message"
+
+- cat >demofile
+  This is stash file (after applying git stash this content shouldn't show)
+
+  git stash
+-now verify 
+  cat demofile
+  //nothing showing
+
+how to revert it
+git stash list
+git stash apply stash{0}
+git add .
+git commit
+
+=============================================================================================================
+
+Github - Version control tool
+reset - used for local changes
+revert- used for remote changes
+stash - temporary memory
+git riflock- we deleted git branch if we want to get back the same branch, using git riflock we can do that
+git tag - giving specific version to git repository
+conflict -identify file, modify file, push to git repo
+
+==========================================================================================================
+
+
+
+
+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
+
+
+
+
+
+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
+              
+
+
