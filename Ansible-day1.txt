@@ -1,5 +1,5 @@
 Ansible set-up
-
+----------------------------------------------
 1) Launch-2 EC2 instace  
   i)master ii) worker
 
@@ -26,21 +26,68 @@ master:
      
 
 3) Inventory file
+
+exit from passwordless connection
+
   vi /etc/ansible/hosts
 
 inside file : worker ansible_host=private ip(worker node)
+
+ansible all -m ping -u root  --- to check the connection between 2 modules
+-------------------------------------------------------------------------------------------------------------
+
+creating files using ansible Imperative and declarative method
+---------------------------------------------------------------------------------
+i)Imperative method:
+-----------------------------
+ansible all -a "touch filename" creating the file
+ansible all -a "ls" -- listing the files
+ansible all -a "rm filename"
+ansible all -a "df -h"  -- to check the system memory 
+
+hostname  -- to check the master ip address 
+ansible all -a "hostname"  -- to check all the ip address 
+ansible all --list-host --------to list all the connected servers
+
+ii)declarative method: using playbook:
+--------------------------------------------------
+Create using .yml
+---
+- name: creating-some-task
+  hosts: all
+  become: true
+  tasks:
+    - name: creating a directory
+      file:
+         name: creating a directory
+         path: /root/
+         state: directory
+         mode: '0777'
+
+ansible-playbook herosagar.yml  -- to execute playbook
 ====================================================================================
 
 
 Day - 3
 ------------
 Ansible -- 
-             1) How to make the playbook as encrypted 
-              2) How to make the playbook as Decrypted 
-               3)How to edit encrypted playbook
-                   4) How to viewencrypted playbook
-                      5) While creating only i need to encrypt
-                           6) Resetting the password 
+1)How to encrypt existing playbook --- using vault 
+===ansible-vault encrypt playbook.yml 
+
+2) How to make the playbook as Decrypted 
+====ansible-vault decrypt playbook.yml 
+
+3)How to edit encrypted playbook
+====ansible-vault edit playbook.yml  --- only used to edit for encrypted files 
+
+4) How to view encrypted playbook
+====ansible-vault view playbook.yml --- only used to edit for encrypted files 
+
+5) While creating only i need to encrypt
+------- ansible-vault create palybook.yml
+
+6) Resetting the password 
+====ansible-vault rekey playbook.yml 
  
   ==================================================================================
 ---
