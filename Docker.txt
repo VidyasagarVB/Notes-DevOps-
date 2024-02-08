@@ -1,60 +1,64 @@
                                                                                     Docker:
  day1:  Docker overview, installation
+--------------------------------------------------
+>>>>>>>>>Docker helps to create the conatainers which also called as the VM
 
-Docker helps to create the conatainers which also called as the VM
+>>>>>>>>>>>Which we can also use to zip/template the application to support in all the env //Compactibilty
 
-Which we can also use to zip/template the application to support in all the env //Compactibilty
+>>>>>>>>>>>>>Hypervoiser=Convert the physical machine to Virtual
 
-Hypervoiser=Convert the physical machine to Virtual
+>>>>>>>>>>>>>>>>>>Docker HUb = applications image factory
 
-Docker HUb = applications image factory
+>>>>>>>>>>>>>>>>>>>>>>>>install the docker from the document
 
-install the docker from the document
-
-========================================================
+=====================================================================================================
  day2:  
-
+--------------------
 1) How to check docker images
-  docker images
+  >>docker images
 
 2) how to create conatiner
-  docker run -it --name container_name imagename /bin/bash
+ >> docker run -it --name container_name imagename /bin/bash
 
 3) how to check containers
   i) docker ps --- only of running containers
   ii) docker ps -a ---both active and inactive containers
 
 4) how to start container
-  docker start container_name
+  >>>docker start container_name
 
 5) how to go inside container
-  docker attach conatiner_name
+  >>>>docker attach conatiner_name
 
 6) how to create customized image by using existing container
-   docker commit container_name(existing container) image_name(customied image)
+   >>>docker commit container_name(existing container) image_name(customied image)
 
 7) how to delete container
-  docker rm container_name
+  >>>>docker rm container_name
 
 8) How to search image
-   docker search image_name
+   >>>>docker search image_name
 
 9)To check docker service in our local
-   service docker status
-========================================
-Day 3:
-
+   >>>>service docker status
+=====================================================================================================
+Day 3: Declarative method
+------------------------------------
 instructions:
-
+-----------------------
 1. FROM ---image pull
-2. RUN -- execute -
+2. RUN -- execute - echo "msg"  >>>>>"Hi vidya" >tmp/echofile
 3. WORKDIR -- set working directory for container
 4. ENV - to set name 
 5.COPY - copy file from source to dest
-6. ADD - similar to COPY command      
-7. VOLUME
 
-=======================================================
+6. ADD - similar to COPY command / if the file is zipped then ADD cmd used to unzip //tar -cvf filename.tar filename-- to apply tar // gzip filename.tar filename.tar.gz -- to apply zip
+
+7. VOLUME -- deleted container can be re accessed
+
+>>>>>Once Dockerfile is created we need to build image for it then we need to create container with that image
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 docker build -t Nandini .  //image create
@@ -65,14 +69,17 @@ tar -cvf test.tar test // tar file
 
 docker run -it --name container4 --privileged=true --volumes-from container3 ubuntu /bin/bash //to share volume from  container3 to congtainer4
 
-====================================
+======================================================================================================
 
 Day-4:
-
+--------------
 
 Docker day 4
 ------------------
-1)docker run -td --name vidya -p 80:80 ubuntu === Port mapping with the docker 
+1)docker run -td --name vidya -p 80:80 ubuntu === Port mapping with the docker >> Mapping the host machine with
+target 
+
+>>>>>>>>>>>docker port containername
 
 --------------systemctl enable docker
 ----------------------systemctl restart docker
@@ -80,12 +87,15 @@ Docker day 4
 
 2)docker exec -it containername(Vidya) /bin/bash === stars the conatiner and attach
 
-4)docker commit containername imagename 
+4)docker commit containername imagename ===To create image of a existing container
 
-3)docker login === to login 
+---------------------------------------------push and pull to docker hub---------------------------------------
 
-5)docker tag imgname(customie img name) dockerID/commit msg == push the img to docker hub
+5)docker login === to login into docker hub
 
-6)docker push dockerID/newimage === push the img to docker hub
+6)docker tag imgname(customie img name) dockerID/commit msg === stagging before push
+
+7)docker push vidyahina(customie img name)/practice == push the img to docker hub
+
 
 
