@@ -1,7 +1,17 @@
                                                                                     Docker:
  day1:  Docker overview, installation
 
-==================================================
+Docker helps to create the conatainers which also called as the VM
+
+Which we can also use to zip/template the application to support in all the env //Compactibilty
+
+Hypervoiser=Convert the physical machine to Virtual
+
+Docker HUb = applications image factory
+
+install the docker from the document
+
+========================================================
  day2:  
 
 1) How to check docker images
