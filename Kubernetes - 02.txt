@@ -5,11 +5,15 @@
 
 Day - 1 -Kubernetes
 =================
-
+K8s
+----------
 1)kube-apiserver: The API server is a component of the Kubernetes control plane that exposes the Kubernetes API. ...
 2)etcd db : which stores the data related to the pod created 
 3)kube-scheduler : Which recives the request from the api and do the work
 4)kube-controller-manager : Which control the worker node (Scalingup/down, delete/recover)
+
+----------------------worker----------------------------------------------
+
 5)Pod : Which is the logical bondary to hold the containers
 6)kubelet : Which helps to create the pod
 7)kube-proxy: Which take care about the network, IP address, security related things belongs to POD
@@ -19,8 +23,24 @@ Day - 1 -Kubernetes
 t2 medium
 
 2 ec2 docker in both and enable it
+------yum install docker
+------systemctl enable docker
+---------systemctl restart docker
+------------systemctl status docker
 
 kubernetes install in both and enable it
+
+url : https://v1-27.docs.kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
+
+>>>cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.27/rpm/
+enabled=1
+gpgcheck=1
+gpgkey=https://pkgs.k8s.io/core:/stable:/v1.27/rpm/repodata/repomd.xml.key
+exclude=kubelet kubeadm kubectl cri-tools kubernetes-cni
+EOF
 
 ---------------------------------
 in master
@@ -30,11 +50,16 @@ kubeadm init
 mkdir -p $HOME/.kube
   sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
   sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
 install 3 following cmd of kubadm
+>>after that paste these 3 cmd in the master node itself
 
 then paste token in WORKER node
+>>>>>>>>>>EX: kubeadm join 172.31.5.180:6443 --token oryzok.m7ph584shl82tm4m \
+        --discovery-token-ca-cert-hash sha256:aabed632b39b9add5924a1e173723c4cdc7ff4d718f19f0ec694aa51c43b9217 
 
-calico from tiger
+>>>>>Install calico from tigera
+>>>>>>url : https://docs.tigera.io/calico/latest/getting-started/kubernetes/self-managed-onprem/onpremises
 
 kubectl get nodes = to check the nodes
 
@@ -42,9 +67,9 @@ kubectl get nodes = to check the nodes
 imperative
 ===========
 
-kubectl get podes === to check the pods
+kubectl get pods === to check the pods
 
-kubectl run mypod --image=nginx  === create pod
+kubectl run mypod(podname) --image=nginx  === create pod
 
 kubectl get pods -o wide == check the ip address of pod
 
@@ -54,9 +79,7 @@ declarative
 
 kubectl delete pod podname
 
-.yml
-
-manifest pod
+vi manifestname.yml  >>> to write the manifest pod
 ----------------------
 apiVersion: v1
 kind: Pod
@@ -66,6 +89,7 @@ spec:
   containers:
   - name: nginx
     image: nginx:1.14.2
+------------------------------
 
 kubectl apply -f .yml === to create the pod using yml file
 
@@ -86,13 +110,13 @@ kubectl describe pod nandinipod === Check all the details of the pod
 
 
  Labels:
-
+-------------
 -- With the helps of labels we can select perticular pod
 -- Labels are the mechanism where we can organise our kubernetes objects
 -- Labels are the key:value pair
 
 With labels we will create pods by using declarative method:
-
+-------------------------------------------------------------------------------
 #vi pod1.yml
 
 kind: Pod
@@ -115,21 +139,21 @@ spec:
 
 
 Label set by using imperative method
-
+-------------------------------------------------------
 #kubectl label pods mypod(pod_name) myname=nandu(label)
 #kubectl get pods --show-labels
-#kubectl run pod-xyz --image-nginx (here we didn't set any label , but if we check label for this pod ,by default run=pod-xyz this label has been set)
+#kubectl run pod-xyz --image=nginx (here we didn't set any label , but if we check label for this pod ,by default run=pod-xyz this label has been set)
 to set customized name for run=pod-xyz ,we will use below command
 #kubectl label pods pod-xyz application=k8s
 #kubectl get pods --show-label
 
-We forgot the pod name(pod-xyz) in this case we can find out the pod name using label
+If we forgot the pod name(pod-xyz) in this case we can find out the pod name using label
 # kubectl get pods -l application=k8s 
 
 =====================================
 
 Selectors:
-
+------------------
 #vi pod4.yml
 
 kind: Pod
@@ -151,7 +175,7 @@ according to above manifest , this is the selector -  hardware: t2-medium, if we
 #kubectl apply -f pod4.yml
 #kubectl get nodes
 #kubectl get nodes --show-labels
-#kubectl get pods // here nodelabels is showing as pending status ,because not yet set this name -->  hardware: t2-medium
+#kubectl get pods // here nodelabels is showing as pending status ,because not set this name yet -->  hardware: t2-medium
  to any node ,so will see how to set this name-->  hardware: t2-medium to node
 #kubectl get nodes
 #kubectl label nodes (copy and paste the ip of the node) hardware: t2-medium

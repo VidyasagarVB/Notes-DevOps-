@@ -4,9 +4,9 @@
 
 
 Replicas/Pod Controller - 3 types
-1) Replica Controller
-2) Replicaset controller
-3) Deployment controller
+1) Replica Controller : managing the pod if deleted it will create other
+2) Replicaset controller : same as controller here apiVersion changes from v1 to apps/v and we can metion multiple labels
+3) Deployment controller : Above the replica set, which manages the replicaset, version rollout and rollining update statergy
 
 ==============================================
 1) Replica controller   
@@ -15,6 +15,7 @@ Replicas/Pod Controller - 3 types
 
 --- we can mention only one lable
 ----apiVersion:v1
+----------------------------------------------------
 
 #vi myrc.yml
 kind: ReplicationController               
@@ -46,14 +47,15 @@ spec:
 
 
 2) Replicaset controller
+========================
     How to create Replicaset controller
     Scaleup, scale down
 
 --- we can use multiple labels
 ----apiVersion:apps/v1
-
+----------------------------------------------------
 #vi myrs.yml
-
+----------------------------------------------------
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
@@ -83,11 +85,12 @@ spec:
 3)  Deployment controller
     How to create  Deployment controller
     Scaleup, scale down
-
+---------------------------------------------------------------
 --- we can use multiple labels
 ----apiVersion:apps/v1
 
 #vi mydeploy.yml
+--------------------------------
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -115,18 +118,18 @@ spec:
 #kubectl get pods --show-labels  //to check labels
 #kubectl scale --replicas=4 deploy mydeployment(deployment name)  //to scale up or scale down
 #kubectl get pods
-#kubectl logs -f mydeploymentname(copy from above command #kubectl get pods) // to check belo command working or not {  command: ["/bin/bash", "-c", "while true; do echo HELLO SUMEET; sleep 5; done"]}
+#kubectl logs -f mydeploymentname(copy from above command #kubectl get pods) // to check below command working or not {  command: ["/bin/bash", "-c", "while true; do echo HELLO SUMEET; sleep 5; done"]}
 
 #kubectl delete -f mydeploy.yml // use to delete the resources inside the manifest , Note: here we are not deleting the manifest ,if we check #ls  -->myrc.yml will show(manifest not deleted)
 
 
 
 rolling update stratergy:
- 
+---------------------------------- 
 Initially we have os:ubuntu and I have changed it to centos , So if I want to reverback this changes (means centos to ubuntu) we will use rolling update stratergy
 
 rollback steps --> 
-
+--------------------------
 mydeployments(deployment name mentione in menifest) -rollout 
  
  1) kubectl rollout status deployment mydeployments --to update our deployment rollback
