@@ -1,3 +1,20 @@
+Here is the Placement Drive Details :    
+================================
+Job drive date : Every 2nd & 4th Saturday of the month   
+   
+1st Round - Clear MCQ round    
+2nd Round - Clear practical Tasks    
+3rd Round - Online Face-to-Face Interview   
+   
+Criteria to attend Placement Drive :    
+--------------------------------------------------
+Must have MicroDegree’s AWS & DevOps course completion Certificate   
+Must have your own AWS account   
+Must complete 50% of  “Placement prep course” available in MicroDegree Dashboard
+
+Registration Link : https://tally.so/r/3xVJNk
+
+=======================================================================================================
 Assignment 1.
 ---------------------
 Creating an IAM User and Assigning Permissions:
